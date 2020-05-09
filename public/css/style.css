@@ -1,0 +1,37 @@
+body {
+    font-family: 'Jost', sans-serif;
+}
+
+.navbar {
+    margin: 35px;
+}
+
+#banner {
+    text-align: center;
+    margin: auto;
+    height: 75vh;
+}
+#banner h1 {
+    font-size: 6em;   
+}
+#banner h2 {
+    font-size: 2em;
+}
+#banner a {
+    margin-top: 5px;
+}
+
+
+tr:nth-child(even){
+    background: rgba(171, 204, 197,0.5);
+}
+
+
+.postContent {
+    white-space: pre-wrap;
+}
+
+
+footer {
+    text-align: center;
+}

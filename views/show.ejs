@@ -1,0 +1,47 @@
+<%- include("./partials/header") %>
+<h1><%= post.title %></h1>
+<h3><%=post.user%></h3>
+<div class="row">
+    <div class="col">
+        <p class="postContent">
+            <%= post.content %>
+        </p>
+    </div>
+</div>
+<a href="/discussion/<%= post._id %>/edit" class="btn btn-outline-info">edit</a>
+<hr>
+<a href="/discussion">back to discussion</a>
+<div class="container replies">
+        <div class="row">
+                <div class="col text-right">
+                    <a href="/discussion/<%= post._id %>/comments/new">add a reply</a>
+                </div>
+            </div>
+        <h4>Replies</h4>
+        <div class="row">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>user</th>
+                        <th>reply</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% post.comments.forEach(function(comment){ %>
+                        <tr>
+                            <td>
+                                <em>
+                                   <%= comment.author %>
+                                </em>
+                            </td>
+                            <td>
+                                <%= comment.text %>
+                            </td>
+                        </tr>
+                    <% }); %>
+                    
+                    </tbody>
+                </table>
+        </div>
+</div>
+<%- include("./partials/footer") %>

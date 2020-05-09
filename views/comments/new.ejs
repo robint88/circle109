@@ -1,0 +1,16 @@
+<%- include('../partials/header') %>
+<h1>Add a comment to</h1>
+<h3><em><%= post.title%></em></h3>
+
+<div class="form-group">
+    <form action="/discussion/<%= post._id %>/comments" method="POST"> 
+            <label for="author">author</label>
+            <input type="text" class="form-control" name="comment[author]" id="author" placeholder="please enter your name">
+
+            <label for="comment">comment</label>
+            <textarea class="form-control" name="comment[text]" id="comment" cols="30" rows="10" placeholder="please enter your reply"></textarea>
+            <br>
+            <button class="btn btn-outline-info" type="submit">add comment</button>            
+    </form>
+</div>
+<%- include('../partials/footer') %>
