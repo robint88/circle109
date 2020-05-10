@@ -1,0 +1,14 @@
+<%- include("./partials/header") %>
+<h1>Register</h1>
+<div class="form-group row justify-content-center">
+    <form action="/register" class="col-6" method="POST">
+        <label for="username">username</label>
+        <input type="text" id="username" class="form-control" name="username" placeholder="enter a username">
+
+        <label for="password">password</label>
+        <input type="password" name="password" class="form-control" id="password" placeholder="enter a password">
+        <br>
+        <button type="submit" class="btn btn-outline-info">register</button>
+    </form>
+</div>
+<%- include("./partials/footer") %>

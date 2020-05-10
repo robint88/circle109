@@ -4,6 +4,12 @@ const ejs = require('ejs');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const methodOverride = require('method-override');
+const passport = require('passport');
+const localStrategy = require('passport-local');
+// MODEL
+const Post = require("./models/post");
+const Comment = require("./models/comment");
+const User = require("./models/user");
 
 const app = express();
 app.set('view engine', 'ejs');
@@ -13,9 +19,17 @@ app.use(methodOverride("_method"));
 
 mongoose.connect("mongodb://localhost:27017/circle109", {useNewUrlParser: true});
 
-// MODEL
-const Post = require("./models/post");
-const Comment = require("./models/comment");
+//Pasport config
+app.use(require('express-session')({
+    secret: 'Lando is a very barky boy', //USE .ENV FILE TO CREATE SECRET
+    resave: false,
+    saveUninitialized: false
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new localStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 
 //Routes
 app.get('/', function(req,res){
@@ -81,7 +95,7 @@ app.delete('/discussion/:postId', function(req,res){
     });
 });
 //  **** COMMENTS ****
-app.get('/discussion/:postId/comments/new', function(req,res){
+app.get('/discussion/:postId/comments/new', isLoggedIn,function(req,res){
     Post.findById(req.params.postId, function(err, foundPost){
         if(err){
             console.log(err);
@@ -90,7 +104,7 @@ app.get('/discussion/:postId/comments/new', function(req,res){
         }
     });
 });
-app.post("/discussion/:postId/comments", function(req, res){
+app.post("/discussion/:postId/comments", isLoggedIn, function(req, res){
     Post.findById(req.params.postId, function(err, foundPost){
         if(err){
             console.log(err);
@@ -108,6 +122,45 @@ app.post("/discussion/:postId/comments", function(req, res){
         }
     });
 });
+
+// USER ROUTES
+app.get("/register", function(req, res){
+    res.render('register');
+});
+app.post("/register", function(req, res){
+    const newUser = new User({username: req.body.username});
+    User.register(newUser, req.body.password, function(err, newUser){
+        if(err){
+            console.log(err);
+            return res.render('register');
+        } else {
+            passport.authenticate('local')(req, res, function(){
+                res.redirect('/discussion');
+            });
+        }
+    });
+});
+app.get("/login", function(req,res){
+    res.render('login');
+});
+app.post("/login", passport.authenticate('local',{
+        successRedirect: "/discussion",
+        failureRedirect: "/login"
+    }), function(req,res){
+        // CAN REMOVE CALLBACK
+});
+app.get("/logout", function(req,res){
+    req.logout();
+    res.redirect("/");
+})
+
+// Middleware
+function isLoggedIn(req,res,next){
+    if(req.isAuthenticated()){
+        return next();
+    }
+    res.redirect("/login");
+}
 
 // //ALLOWS TO RUN ON HEROKU OR LOCAL
 // app.listen(process.env.PORT || 3000);
