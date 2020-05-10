@@ -10,6 +10,9 @@ const localStrategy = require('passport-local');
 const Post = require("./models/post");
 const Comment = require("./models/comment");
 const User = require("./models/user");
+// ROUTE
+const postRoutes = require('./routes/posts');
+const commentRoutes = require('./routes/comments');
 
 const app = express();
 app.set('view engine', 'ejs');
@@ -41,92 +44,8 @@ app.use(function(req,res,next){
 app.get('/', function(req,res){
     res.render('index');
 });
-app.get('/discussion', function(req, res){
-    Post.find({}, function(err, foundPosts){
-        if(err){
-            console.log(err);
-        } else {
-            res.render('discussion', {posts: foundPosts});
-        }
-    })
-});
-app.get('/discussion/new', function(req, res){
-    res.render('new');
-});
-app.post('/discussion', function(req,res){
-    Post.create(req.body.post, function(err, newPost){
-        if(err){
-            console.log(err);
-        } else {
-            newPost.save();
-            res.redirect('/discussion/' + newPost._id);
-        }
-    });
-});
-app.get('/discussion/:postId', function(req,res){
-    Post.findById(req.params.postId).populate("comments").exec(function(err, foundPost){
-        if(err){
-            console.log(err);
-        } else {
-            res.render('show', {post: foundPost});
-        }
-    });
-});
-app.get('/discussion/:postId/edit', function(req,res){
-    Post.findById(req.params.postId, function(err, foundPost){
-        if(err){
-            console.log(err);
-        } else {
-            res.render('edit', {post: foundPost});
-        }
-    });
-});
-app.put('/discussion/:postId', function(req, res){
-    const post = req.body.post;
-    Post.findByIdAndUpdate(req.params.postId, post, function(err, updatedPost){
-        if(err) {
-            console.log(err);
-        } else {
-            res.redirect('/discussion/' + updatedPost._id);
-        }
-    });
-});
-app.delete('/discussion/:postId', function(req,res){
-    Post.findByIdAndRemove(req.params.postId, function(err){
-        if(err){
-            console.log(err);
-        }
-        res.redirect('/discussion');
-    });
-});
-//  **** COMMENTS ****
-app.get('/discussion/:postId/comments/new', isLoggedIn,function(req,res){
-    Post.findById(req.params.postId, function(err, foundPost){
-        if(err){
-            console.log(err);
-        } else {
-            res.render('comments/new', {post: foundPost});
-        }
-    });
-});
-app.post("/discussion/:postId/comments", isLoggedIn, function(req, res){
-    Post.findById(req.params.postId, function(err, foundPost){
-        if(err){
-            console.log(err);
-        } else {
-            Comment.create(req.body.comment, function(err, newComment){
-                if(err){
-                    console.log(err);
-                } else {
-                    newComment.save();
-                    foundPost.comments.push(newComment);
-                    foundPost.save();
-                    res.redirect("/discussion/" + foundPost._id);
-                }
-            });
-        }
-    });
-});
+app.use("/discussion",postRoutes);
+app.use(commentRoutes);
 
 // USER ROUTES
 app.get("/register", function(req, res){
