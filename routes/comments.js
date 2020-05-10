@@ -1,11 +1,11 @@
 const mongoose = require('mongoose');
 const express = require('express');
-const router = express.Router();
+const router = express.Router({mergeParams: true});
 const Post = require("../models/post");
 const Comment = require("../models/comment");
 
 //  **** COMMENTS ****
-router.get('/discussion/:postId/comments/new', isLoggedIn,function(req,res){
+router.get('/new', isLoggedIn,function(req,res){
     Post.findById(req.params.postId, function(err, foundPost){
         if(err){
             console.log(err);
@@ -14,7 +14,7 @@ router.get('/discussion/:postId/comments/new', isLoggedIn,function(req,res){
         }
     });
 });
-router.post("/discussion/:postId/comments", isLoggedIn, function(req, res){
+router.post("/", isLoggedIn, function(req, res){
     Post.findById(req.params.postId, function(err, foundPost){
         if(err){
             console.log(err);
@@ -23,6 +23,8 @@ router.post("/discussion/:postId/comments", isLoggedIn, function(req, res){
                 if(err){
                     console.log(err);
                 } else {
+                    newComment.author.id = req.user._id;
+                    newComment.author.username = req.user.username;
                     newComment.save();
                     foundPost.comments.push(newComment);
                     foundPost.save();

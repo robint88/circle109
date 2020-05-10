@@ -45,7 +45,7 @@ app.get('/', function(req,res){
     res.render('index');
 });
 app.use("/discussion",postRoutes);
-app.use(commentRoutes);
+app.use("/discussion/:postId/comments", commentRoutes);
 
 // USER ROUTES
 app.get("/register", function(req, res){

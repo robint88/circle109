@@ -2,8 +2,6 @@
 <h1>New Discussion</h1>
 <form action="/discussion/<%=post._id%>?_method=PUT" method="POST">
     <div class="form-group">
-        <label for="user">name:</label>
-        <input type="text"  class='form-control' id="user" name="post[user]" value="<%= post.user%>" required>
 
         <label for="title">title:</label>
         <input type="text" class="form-control" id="title" name='post[title]' value="<%= post.title%>" required>

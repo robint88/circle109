@@ -4,9 +4,6 @@
 
 <div class="form-group">
     <form action="/discussion/<%= post._id %>/comments" method="POST"> 
-            <label for="author">author</label>
-            <input type="text" class="form-control" name="comment[author]" id="author" placeholder="please enter your name">
-
             <label for="comment">comment</label>
             <textarea class="form-control" name="comment[text]" id="comment" cols="30" rows="10" placeholder="please enter your reply"></textarea>
             <br>
