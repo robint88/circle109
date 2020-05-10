@@ -31,10 +31,15 @@ passport.use(new localStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
+// Pass in currentUser
+app.use(function(req,res,next){
+    res.locals.currentUser = req.user;
+    next();
+});
+
 //Routes
 app.get('/', function(req,res){
     res.render('index');
-
 });
 app.get('/discussion', function(req, res){
     Post.find({}, function(err, foundPosts){
@@ -128,7 +133,7 @@ app.get("/register", function(req, res){
     res.render('register');
 });
 app.post("/register", function(req, res){
-    const newUser = new User({username: req.body.username});
+    const newUser = new User({username: req.body.username,residentType: req.body.residentType});
     User.register(newUser, req.body.password, function(err, newUser){
         if(err){
             console.log(err);

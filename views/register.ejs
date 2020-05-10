@@ -3,12 +3,21 @@
 <div class="form-group row justify-content-center">
     <form action="/register" class="col-6" method="POST">
         <label for="username">username</label>
-        <input type="text" id="username" class="form-control" name="username" placeholder="enter a username">
+        <input type="text" id="username" class="form-control" name="username" placeholder="enter a username" required>
 
         <label for="password">password</label>
-        <input type="password" name="password" class="form-control" id="password" placeholder="enter a password">
+        <input type="password" name="password" class="form-control" id="password" placeholder="enter a password" required>
+        
+        <label for="residentType">owner or renter</label>
+        <select class="form-control" data-style="btn-info" id="residentType" name="residentType" required>
+                <optgroup label="owner/renter">
+                    <option name="" value="owner">owner</option>
+                    <option name="table1" value="renter">renter</option>
+                </optgroup>
+            </select>
         <br>
         <button type="submit" class="btn btn-outline-info">register</button>
     </form>
 </div>
+<p class="text-center">already registered? login <a href="/login">here</a></p>
 <%- include("./partials/footer") %>
