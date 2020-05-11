@@ -18,15 +18,19 @@ router.get('/new', isLoggedIn, function(req, res){
 });
 // Create
 router.post('/', isLoggedIn, function(req,res){
-    Post.create(req.body.post, function(err, newPost){
+    const postUser = {
+        id: req.user._id,
+        username: req.user.username
+    }
+    const postTitle = req.body.post.title
+    const postContent = req.body.post.content
+
+    const postInfo = {title: postTitle, content: postContent, user: postUser};
+
+    Post.create(postInfo, function(err, newPost){
         if(err){
             console.log(err);
         } else {
-            const author = {
-                id: req.user._id,
-                username: req.user.username
-            }
-            newPost.user = author;
             newPost.save();
             res.redirect('/discussion/' + newPost._id);
         }
@@ -43,17 +47,13 @@ router.get('/:postId', function(req,res){
     });
 });
 // Edit
-router.get('/:postId/edit', function(req,res){
-    Post.findById(req.params.postId, function(err, foundPost){
-        if(err){
-            console.log(err);
-        } else {
+router.get('/:postId/edit', checkOwner, function(req,res){
+        Post.findById(req.params.postId, function(err, foundPost){
             res.render('edit', {post: foundPost});
-        }
-    });
+        });  
 });
 // Update
-router.put('/:postId', function(req, res){
+router.put('/:postId', checkOwner, function(req, res){
     const post = req.body.post;
     Post.findByIdAndUpdate(req.params.postId, post, function(err, updatedPost){
         if(err) {
@@ -64,7 +64,7 @@ router.put('/:postId', function(req, res){
     });
 });
 // Destroy
-router.delete('/:postId', function(req,res){
+router.delete('/:postId', checkOwner, function(req,res){
     Post.findByIdAndRemove(req.params.postId, function(err){
         if(err){
             console.log(err);
@@ -80,5 +80,21 @@ function isLoggedIn(req,res,next){
     }
     res.redirect("/login");
 }
-
+function checkOwner(req, res, next){
+    if(req.isAuthenticated()){
+        Post.findById(req.params.postId, function(err, foundPost){
+            if(err){
+                res.redirect('back');
+            } else {
+                if(foundPost.user.id.equals(req.user._id)){
+                    next();
+                } else {
+                    res.redirect('back');
+                }
+            }
+        });
+    } else {
+        res.redirect('back');
+    }
+}
 module.exports = router;

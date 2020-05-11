@@ -8,7 +8,9 @@
         </p>
     </div>
 </div>
-<a href="/discussion/<%= post._id %>/edit" class="btn btn-outline-info">edit</a>
+<% if(currentUser && post.user.id.equals(currentUser._id)){ %>
+    <a href="/discussion/<%= post._id %>/edit" class="btn btn-outline-info">edit</a>
+<% } %>
 <hr>
 <a href="/discussion">back to discussion</a>
 <div class="container replies">
@@ -36,6 +38,14 @@
                             </td>
                             <td>
                                 <%= comment.text %>
+                                <% if(currentUser && comment.author.id.equals(currentUser._id)){ %>
+                                    <br>
+                                    <br>
+                                    <a href="/discussion/<%= post._id%>/comments/<%= comment._id %>/edit" class="btn btn-sm btn-outline-info">edit</a>
+                                    <form id="deleteForm" id="deleteForm" action="/discussion/<%= post._id %>/comments/<%= comment._id %>?_method=DELETE" method="POST">
+                                        <button href="" class="btn btn-sm btn-outline-danger">delete</button>
+                                    </form>
+                                <% } %>
                             </td>
                         </tr>
                     <% }); %>

@@ -1,0 +1,12 @@
+<%- include('../partials/header') %>
+<h1>Edit comment</h1>
+
+<div class="form-group">
+    <form action="/discussion/<%= post_id %>/comments/<%= comment._id %>?_method=PUT" method="POST"> 
+            <label for="comment">comment</label>
+            <textarea class="form-control" name="comment[text]" id="comment" cols="30" rows="10"><%= comment.text %></textarea>
+            <br>
+            <button class="btn btn-outline-info" type="submit">edit comment</button>         
+    </form>
+</div>
+<%- include('../partials/footer') %>

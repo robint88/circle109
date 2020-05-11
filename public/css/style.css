@@ -17,6 +17,11 @@ body {
     margin: auto;
     height: 75vh;
 }
+
+#deleteForm {
+    display: inline;
+}
+
 #banner h1 {
     font-size: 6em;   
 }

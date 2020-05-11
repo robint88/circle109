@@ -11,6 +11,7 @@ const Post = require("./models/post");
 const Comment = require("./models/comment");
 const User = require("./models/user");
 // ROUTE
+const indexRoutes = require('./routes/index');
 const postRoutes = require('./routes/posts');
 const commentRoutes = require('./routes/comments');
 
@@ -41,42 +42,11 @@ app.use(function(req,res,next){
 });
 
 //Routes
-app.get('/', function(req,res){
-    res.render('index');
-});
+app.use(indexRoutes);
 app.use("/discussion",postRoutes);
 app.use("/discussion/:postId/comments", commentRoutes);
 
-// USER ROUTES
-app.get("/register", function(req, res){
-    res.render('register');
-});
-app.post("/register", function(req, res){
-    const newUser = new User({username: req.body.username,residentType: req.body.residentType});
-    User.register(newUser, req.body.password, function(err, newUser){
-        if(err){
-            console.log(err);
-            return res.render('register');
-        } else {
-            passport.authenticate('local')(req, res, function(){
-                res.redirect('/discussion');
-            });
-        }
-    });
-});
-app.get("/login", function(req,res){
-    res.render('login');
-});
-app.post("/login", passport.authenticate('local',{
-        successRedirect: "/discussion",
-        failureRedirect: "/login"
-    }), function(req,res){
-        // CAN REMOVE CALLBACK
-});
-app.get("/logout", function(req,res){
-    req.logout();
-    res.redirect("/");
-})
+
 
 // Middleware
 function isLoggedIn(req,res,next){
