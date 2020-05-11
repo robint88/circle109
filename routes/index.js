@@ -8,7 +8,7 @@ const User = require('../models/user');
 // =======INDEX ROUTE=========
 // ===========================
 router.get('/', function(req,res){
-    res.render('index');
+    res.render('posts/index');
 });
 
 // ============================

@@ -1,4 +1,4 @@
-require('dotenv').config;
+require('dotenv').config();
 const express = require('express');
 const ejs = require('ejs');
 const bodyParser = require('body-parser');
@@ -22,12 +22,13 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static(__dirname+'/public'));
 app.use(methodOverride("_method"));
 app.use(flash());
+app.locals.moment = require('moment');
 
 mongoose.connect("mongodb://localhost:27017/circle109", {useNewUrlParser: true});
 
 //Pasport config
 app.use(require('express-session')({
-    secret: 'Lando is a very barky boy', //USE .ENV FILE TO CREATE SECRET
+    secret: process.env.SECRET, //USE .ENV FILE TO CREATE SECRET
     resave: false,
     saveUninitialized: false
 }));
@@ -50,8 +51,8 @@ app.use("/discussion",postRoutes);
 app.use("/discussion/:postId/comments", commentRoutes);
 
 // //ALLOWS TO RUN ON HEROKU OR LOCAL
-// app.listen(process.env.PORT || 3000);
+app.listen(process.env.PORT || 3000);
 //server
-app.listen(3000, function(){
-    console.log("SERVER RUNNING ON POST 3000! WOOHOO!");
-});
+// app.listen(3000, function(){
+//     console.log("SERVER RUNNING ON POST 3000! WOOHOO!");
+// });

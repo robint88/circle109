@@ -1,0 +1,16 @@
+<%- include('../partials/header') %>
+<h1>New Discussion</h1>
+<form action="/discussion" method="POST">
+    <div class="form-group">
+
+        <label for="title">title:</label>
+        <input type="text" class="form-control" id="title" name='post[title]' placeholder="please give your post a title" required>
+
+        <label for="content">content:</label>
+        <textarea name="post[content]" class="form-control" id="content" cols="30" rows="10" placeholder="please add content to develop your discussion" required></textarea>
+
+        <br>
+        <button type="submit" class="btn btn-outline-info" >submit</button>
+    </div>
+</form>
+<%- include('../partials/footer') %>

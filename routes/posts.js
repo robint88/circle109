@@ -9,13 +9,13 @@ router.get('/', function(req, res){
         if(err){
             console.log(err);
         } else {
-            res.render('discussion', {posts: foundPosts});
+            res.render('posts/discussion', {posts: foundPosts});
         }
     })
 });
 // New
 router.get('/new', middleware.isLoggedIn, function(req, res){
-    res.render('new');
+    res.render('posts/new');
 });
 // Create
 router.post('/', middleware.isLoggedIn, function(req,res){
@@ -43,14 +43,14 @@ router.get('/:postId', function(req,res){
         if(err){
             console.log(err);
         } else {
-            res.render('show', {post: foundPost});
+            res.render('posts/show', {post: foundPost});
         }
     });
 });
 // Edit
 router.get('/:postId/edit', middleware.checkOwner, function(req,res){
         Post.findById(req.params.postId, function(err, foundPost){
-            res.render('edit', {post: foundPost});
+            res.render('posts/edit', {post: foundPost});
         });  
 });
 // Update
