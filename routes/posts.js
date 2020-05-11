@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const express = require('express');
 const router = express.Router();
 const Post = require('../models/post');
+const middleware = require("../middleware");
 
 router.get('/', function(req, res){
     Post.find({}, function(err, foundPosts){
@@ -13,11 +14,11 @@ router.get('/', function(req, res){
     })
 });
 // New
-router.get('/new', isLoggedIn, function(req, res){
+router.get('/new', middleware.isLoggedIn, function(req, res){
     res.render('new');
 });
 // Create
-router.post('/', isLoggedIn, function(req,res){
+router.post('/', middleware.isLoggedIn, function(req,res){
     const postUser = {
         id: req.user._id,
         username: req.user.username
@@ -47,24 +48,25 @@ router.get('/:postId', function(req,res){
     });
 });
 // Edit
-router.get('/:postId/edit', checkOwner, function(req,res){
+router.get('/:postId/edit', middleware.checkOwner, function(req,res){
         Post.findById(req.params.postId, function(err, foundPost){
             res.render('edit', {post: foundPost});
         });  
 });
 // Update
-router.put('/:postId', checkOwner, function(req, res){
+router.put('/:postId', middleware.checkOwner, function(req, res){
     const post = req.body.post;
     Post.findByIdAndUpdate(req.params.postId, post, function(err, updatedPost){
         if(err) {
             console.log(err);
         } else {
+            req.flash("success", "Updated post!");
             res.redirect('/discussion/' + updatedPost._id);
         }
     });
 });
 // Destroy
-router.delete('/:postId', checkOwner, function(req,res){
+router.delete('/:postId', middleware.checkOwner, function(req,res){
     Post.findByIdAndRemove(req.params.postId, function(err){
         if(err){
             console.log(err);
@@ -74,27 +76,6 @@ router.delete('/:postId', checkOwner, function(req,res){
 });
 
 // Middleware
-function isLoggedIn(req,res,next){
-    if(req.isAuthenticated()){
-        return next();
-    }
-    res.redirect("/login");
-}
-function checkOwner(req, res, next){
-    if(req.isAuthenticated()){
-        Post.findById(req.params.postId, function(err, foundPost){
-            if(err){
-                res.redirect('back');
-            } else {
-                if(foundPost.user.id.equals(req.user._id)){
-                    next();
-                } else {
-                    res.redirect('back');
-                }
-            }
-        });
-    } else {
-        res.redirect('back');
-    }
-}
+
+
 module.exports = router;

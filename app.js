@@ -4,13 +4,14 @@ const ejs = require('ejs');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const methodOverride = require('method-override');
+const flash = require("connect-flash");
 const passport = require('passport');
 const localStrategy = require('passport-local');
-// MODEL
+// MODELS
 const Post = require("./models/post");
 const Comment = require("./models/comment");
 const User = require("./models/user");
-// ROUTE
+// ROUTES
 const indexRoutes = require('./routes/index');
 const postRoutes = require('./routes/posts');
 const commentRoutes = require('./routes/comments');
@@ -20,6 +21,7 @@ app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static(__dirname+'/public'));
 app.use(methodOverride("_method"));
+app.use(flash());
 
 mongoose.connect("mongodb://localhost:27017/circle109", {useNewUrlParser: true});
 
@@ -34,10 +36,11 @@ app.use(passport.session());
 passport.use(new localStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
-
-// Pass in currentUser
+// Pass in currentUser and Flash messages
 app.use(function(req,res,next){
     res.locals.currentUser = req.user;
+    res.locals.error = req.flash("error");
+    res.locals.success = req.flash("success");
     next();
 });
 
@@ -45,16 +48,6 @@ app.use(function(req,res,next){
 app.use(indexRoutes);
 app.use("/discussion",postRoutes);
 app.use("/discussion/:postId/comments", commentRoutes);
-
-
-
-// Middleware
-function isLoggedIn(req,res,next){
-    if(req.isAuthenticated()){
-        return next();
-    }
-    res.redirect("/login");
-}
 
 // //ALLOWS TO RUN ON HEROKU OR LOCAL
 // app.listen(process.env.PORT || 3000);
