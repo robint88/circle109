@@ -4,7 +4,8 @@
   "description": "residents group board for circle 109",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
   },
   "author": "robin",
   "license": "ISC",
