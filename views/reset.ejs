@@ -1,0 +1,17 @@
+<%- include("./partials/header") %>
+<h1>Reset Password</h1>
+<div class="form-group row justify-content-center">
+    <form action="/reset/<%= token %>" class="col-6" method="POST">
+        <label for="password">new password</label>
+        <input type="password" id="password" class="form-control" name="password" placeholder="enter your email">
+        <br>
+        <label for="confirm">confirm new password</label>
+        <input type="password" id="confirm" class="form-control" name="confirm" placeholder="enter your email">
+
+        <br>
+        <button type="submit" class="btn btn-outline-info">update password</button>
+        <br>
+    </form>
+</div>
+<p class="text-center">not registered? register <a href="/register">here</a></p>
+<%- include("./partials/footer") %>
