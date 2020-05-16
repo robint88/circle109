@@ -19,6 +19,7 @@
             <tr>
               <td><%= post.user.username %></td>
               <td><%= post.title %></td>
+              <td><%= moment(post.createdAt).calendar() %></td>
               <td>
                 <a href="/discussion/<%= post._id %>" class="btn btn-sm btn-outline-warning">view</a>
               </td>
