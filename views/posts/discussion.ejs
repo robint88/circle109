@@ -25,7 +25,6 @@
                 <a href="/discussion/<%= post._id %>" class="btn btn-sm btn-outline-warning">view</a>
               </td>
               <td><%= post.comments.length %></td>
-              <td><%= moment(post.createdAt).calendar() %></td>
               
             </tr>
           <% }) %>
