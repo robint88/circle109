@@ -11,8 +11,9 @@
           <tr>
             <th scope="col">name</th>
             <th scope="col">title</th>
-            <th scope="col"></th>
+            <th></th>
             <th scope="col">comments</th>
+            <th scope="col"></th>
           </tr>
         </thead>
         <tbody>
@@ -20,11 +21,12 @@
             <tr>
               <td><%= post.user.username %></td>
               <td><%= post.title %></td>
-              <td><%= moment(post.createdAt).calendar() %></td>
-              <td><%= post.comments.length %></td>
               <td>
                 <a href="/discussion/<%= post._id %>" class="btn btn-sm btn-outline-warning">view</a>
               </td>
+              <td><%= post.comments.length %></td>
+              <td><%= moment(post.createdAt).calendar() %></td>
+              
             </tr>
           <% }) %>
         </tbody>
