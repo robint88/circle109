@@ -31,8 +31,9 @@ router.post("/", middleware.isLoggedIn, function(req, res){
                     newComment.save();
                     foundPost.comments.push(newComment);
                     foundPost.save();
-                    req.flash("success", "Comment created!");
-                    res.redirect("/discussion/" + foundPost._id);
+                    res.json(newComment);
+                    // req.flash("success", "Comment created!");
+                    // res.redirect("/discussion/" + foundPost._id);
                 }
             });
         }

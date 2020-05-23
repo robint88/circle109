@@ -24,8 +24,8 @@ app.use(methodOverride("_method"));
 app.use(flash());
 app.locals.moment = require('moment');
 
-// mongoose.connect("mongodb://localhost:27017/circle109", {useNewUrlParser: true});
-mongoose.connect(`mongodb+srv://robinadmin:${process.env.DBPWD}@cluster0-9qvnu.mongodb.net/test?retryWrites=true&w=majority`);
+mongoose.connect("mongodb://localhost:27017/circle109", {useNewUrlParser: true});
+// mongoose.connect(`mongodb+srv://robinadmin:${process.env.DBPWD}@cluster0-9qvnu.mongodb.net/test?retryWrites=true&w=majority`);
 
 //Pasport config
 app.use(require('express-session')({
