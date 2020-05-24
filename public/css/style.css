@@ -33,6 +33,9 @@ body {
     margin-top: 5px;
 }
 
+.edit-comment-form {
+    display: none;
+}
 
 tr:nth-child(even){
     background: rgba(171, 204, 197,0.5);

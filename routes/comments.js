@@ -53,24 +53,31 @@ router.get("/:commentId/edit", middleware.checkCommentOwner, function(req, res){
 });
 // Update
 router.put('/:commentId', middleware.checkCommentOwner, function(req, res){
-    Comment.findByIdAndUpdate(req.params.commentId, req.body.comment, function(err, updatedComment){
+    // 3rd arg makes comment the update item, not original
+    Comment.findByIdAndUpdate(req.params.commentId, req.body.comment, {new: true}, function(err, updatedComment){
         if(err){
             res.redirect('back');
         } else {
-            req.flash("success", "Comment updated!");
-            res.redirect('/discussion/' + req.params.postId);
+            // req.flash("success", "Comment updated!");
+            // res.redirect('/discussion/' + req.params.postId);
+            res.json(updatedComment);
         }
     });
 });
 // Destroy
 router.delete("/:commentId", middleware.checkCommentOwner, function(req, res){
+    //NEED TO PULL COMMENT FROM POST -COMMENT ARRAY TOO
+    // Post.updateOne({_id: req.params.id}, {$pull {debates: req.params.commentId}})
+    //     }
+    // })
     Comment.findByIdAndRemove(req.params.commentId, function(err, foundComment){
         if(err){
             req.flash("error", "Something went wrong");
             res.redirect('back');
         } else {
-            req.flash("success", "Comment deleted!");
-            res.redirect('/discussion/' + req.params.postId);
+            // req.flash("success", "Comment deleted!");
+            // res.redirect('/discussion/' + req.params.postId);
+            res.json(foundComment);
         }
     })
 });

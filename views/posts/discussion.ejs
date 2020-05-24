@@ -6,25 +6,25 @@
         </div>
     </div>
     <div class="row">
-      <table class="table">
+      <table class="table text-center">
         <thead>
           <tr>
             <th scope="col">name</th>
             <th scope="col">title</th>
             <th></th>
-            <th scope="col">comments</th>
-            <th scope="col"></th>
+            <!-- <th scope="col">comments</th> -->
           </tr>
         </thead>
         <tbody>
           <% posts.forEach(function(post){ %>
             <tr>
               <td><%= post.user.username %></td>
-              <td><%= post.title %></td>
+              <td>
+                <%= post.title %></td>
               <td>
                 <a href="/discussion/<%= post._id %>" class="btn btn-sm btn-outline-warning">view</a>
               </td>
-              <td><%= post.comments.length %></td>
+              <!-- <td><%= post.comments.length %></td> -->
               
             </tr>
           <% }) %>
