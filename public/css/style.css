@@ -32,7 +32,9 @@ body {
 #banner a {
     margin-top: 5px;
 }
-
+.comment-content{
+    white-space: pre-line;
+}
 .edit-comment-form {
     display: none;
 }

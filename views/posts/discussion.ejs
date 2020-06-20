@@ -10,7 +10,7 @@
         <thead>
           <tr>
             <th scope="col">name</th>
-            <th scope="col">title</th>
+            <th scope="col">title (recently updated first)</th>
             <th></th>
             <!-- <th scope="col">comments</th> -->
           </tr>
@@ -20,7 +20,11 @@
             <tr>
               <td><%= post.user.username %></td>
               <td>
-                <%= post.title %></td>
+                <%= post.title %>
+                <em>
+                  (recent activity - <%=  moment(post.updatedAt).calendar() %>)
+                </em>
+              </td>
               <td>
                 <a href="/discussion/<%= post._id %>" class="btn btn-sm btn-outline-warning">view</a>
               </td>

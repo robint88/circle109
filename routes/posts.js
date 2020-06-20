@@ -5,7 +5,7 @@ const Post = require('../models/post');
 const middleware = require("../middleware");
 
 router.get('/', function(req, res){
-    Post.find({}).sort({createdAt: 'desc'}).exec(function(err, foundPosts){
+    Post.find({}).sort({updatedAt: 'desc'}).exec(function(err, foundPosts){
         if(err){
             console.log(err);
         } else {

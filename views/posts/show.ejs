@@ -4,9 +4,13 @@
 <div class="row">
     <div class="col">
         <h6><%= moment(post.createdAt).calendar() %></h6>
+        <p>
+            last activity (including comments) <%=  moment(post.updatedAt).calendar() %>
+        </p>
         <p class="postContent">
             <%= post.content %>
         </p>
+        
     </div>
 </div>
 <% if(currentUser && post.user.id.equals(currentUser._id)){ %>
@@ -55,7 +59,7 @@
                                    <%= comment.author.username %>
                                 </em>
                             </td>
-                            <td>
+                            <td class="comment-content">
                                 <%= comment.text %>
                                 <% if(currentUser && comment.author.id.equals(currentUser._id)){ %>
                                     <br>

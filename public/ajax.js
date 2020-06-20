@@ -46,7 +46,7 @@ $('#comments').on('submit', '.edit-comment', function(e){
                 <br>
                 <button class="btn btn-sm btn-outline-info edit-button">edit</button>
                 <form id="deleteForm" class="deleteForm" action="${actionUrl}" method="POST">
-                    <button href="" class="btn btn-sm btn-outline-danger">delete</button>
+                    <button class="btn btn-sm btn-outline-danger">delete</button>
                 </form>
                 <div class="form-group edit-comment-form">
                     <form action="${actionUrl}" class="edit-comment" method="POST"> 

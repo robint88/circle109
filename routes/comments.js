@@ -30,6 +30,7 @@ router.post("/", middleware.isLoggedIn, function(req, res){
                     newComment.author.username = req.user.username;
                     newComment.save();
                     foundPost.comments.push(newComment);
+                    foundPost.updatedAt = Date.now();
                     foundPost.save();
                     res.json(newComment);
                     // req.flash("success", "Comment created!");
